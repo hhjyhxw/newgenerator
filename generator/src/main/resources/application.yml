@@ -1,0 +1,30 @@
+# Tomcat
+server:
+    tomcat:
+        max-threads: 10
+        min-spare-threads: 10
+    port: 7777
+
+# mysql
+spring:
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+#        driverClassName: oracle.jdbc.driver.OracleDriver
+#        url: jdbc:oracle:thin:@119.29.34.222:1521:dbmaster
+#        username: zltest
+#        password: zlwqomn0828
+        url: jdbc:mysql://139.159.243.191:3306/housing?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone\=Hongkong
+        username: root
+        password: 123456
+    jackson:
+        time-zone: GMT+8
+        date-format: yyyy-MM-dd HH:mm:ss
+    thymeleaf:
+        mode: LEGACYHTML5
+        cache: false
+
+# Mybatis配置
+mybatis:
+    mapperLocations: classpath:mapper/**/*.xml
+

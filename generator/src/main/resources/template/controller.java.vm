@@ -1,0 +1,52 @@
+package ${package}.${sonModule}.web;
+
+import ${package}.${sonModule}.service.${className}Service;
+import ${package}.${sonModule}.model.${className};
+import ${package}.basecommon.web.BaseIdLongController;
+import ${package}.basecommon.model.Query;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import java.util.Map;
+import com.github.pagehelper.PageInfo;
+
+/**
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ * 菜单主连接： ./backpage/${secondModuleName}/list
+ */
+@Controller
+@RequestMapping(value = "${backPath}/${secondModuleName}")
+public class ${className}Controller extends BaseIdLongController<${className}Service,${className}> {
+
+    @Override
+	public String list(${className} t, @RequestParam Map<String, Object> params) {
+		Query query =  new Query(params);
+		PageInfo<${className}> page = baseService.findByPage(query.getPageNum(), query.getPageSize(), query);
+		request.setAttribute("page", page);
+		request.setAttribute("record", t);
+        return "${sonModule}/##
+#foreach($column in $sonList)
+#if($foreach.hasNext)
+${column}_##
+#else
+${column}_list";
+#end
+#end
+	}
+
+	@Override
+	public String toinput(Long id) {
+		Object ${classname} = baseService.getById(id);
+		request.setAttribute("record", ${classname});
+		return "${sonModule}/##
+#foreach($column in $sonList)
+#if($foreach.hasNext)
+${column}_##
+#else
+${column}_input";
+#end
+#end
+	}
+}

@@ -1,0 +1,19 @@
+package ${package}.${sonModule}.service;
+
+import ${package}.${sonModule}.dao.${className}Mapper;
+import ${package}.${sonModule}.model.${className};
+import ${package}.basecommon.service.MybaseServiceImpl;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * ${comments}
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@Service
+@Transactional
+public class ${className}Service extends MybaseServiceImpl<${className}Mapper,${className}> {
+
+}

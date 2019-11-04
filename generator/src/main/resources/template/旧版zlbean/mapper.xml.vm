@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="${package}.dao.${sonModule}.${className}Mapper">
+
+    <!-- 基础map -->
+    <resultMap type="${package}.model.${sonModule}.${className}" id="BaseResultMap">
+#foreach($column in $columns)
+#if($column.columnName == $pk.columnName)
+     <id property="${column.attrname}" column="${column.columnName}"/>
+#else
+     <result property="${column.attrname}" column="${column.columnName}"/>
+#end
+#end
+    </resultMap>
+
+   <!-- 基础字段列 -->
+   <sql id="Base_Column_List" >
+#foreach($column in $columns)
+#if($foreach.hasNext)
+${column.columnName},##
+#else
+${column.columnName}
+#end
+#end
+    </sql>
+
+
+    <!-- 通过key查询 -->
+#if ($pk.columnName)
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+    <include refid="Base_Column_List" />
+    from $tableName
+    where $pk.columnName = #{$pk.columnName,jdbcType=BIGINT}
+    </select>
+#end
+
+    <!-- 通过key删除 -->
+#if ($pk.columnName)
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from $tableName
+    where $pk.columnName = #{$pk.columnName,jdbcType=BIGINT}
+    </delete>
+#end
+
+    <!-- 插入 -->
+#if ($pk.columnName)
+    <insert id="insert"  useGeneratedKeys="true" keyProperty="$pk.columnName" parameterType="${package}.model.${sonModule}.${className}" >
+        insert into $tableName (
+#foreach($column in $columns)
+#if($foreach.hasNext)
+${column.columnName},##
+#else
+${column.columnName}
+#end
+#end
+    )
+    values (
+#foreach($column in $columns)
+#if($foreach.hasNext)
+#{${column.attrname}},##
+#else
+#{${column.attrname}}
+#end
+#end
+    )
+    </insert>
+#end
+
+    <!-- 插入2 -->
+    <insert id="insertSelective" parameterType="${package}.model.${sonModule}.${className}" >
+         insert into $tableName
+         <trim prefix="(" suffix=")" suffixOverrides="," >
+#foreach($column in $columns)
+         <if test="${column.attrname} != null" >
+             ${column.columnName},
+          </if>
+#end
+          </trim>
+          <trim prefix="values (" suffix=")" suffixOverrides="," >
+#foreach($column in $columns)
+       <if test="${column.attrname} != null" >
+           #{${column.attrname}},
+        </if>
+#end
+          </trim>
+     </insert>
+      <!-- 更新非空字段 -->
+    <update id="updateByPrimaryKeySelective" parameterType="${package}.model.${sonModule}.${className}" >
+    update  $tableName
+    <set >
+#foreach($column in $columns)
+#if($column.columnName != $pk.columnName)
+   <if test="${column.attrname} != null" >
+       ${column.columnName} = #{${column.attrname}},
+    </if>
+#end
+#end
+    </set>
+    where $pk.columnName = #{$pk.columnName}
+  </update>
+    <!-- 更新所有字段 -->
+    <update id="updateByPrimaryKey" parameterType="${package}.model.${sonModule}.${className}" >
+        update $tableName
+        set
+#foreach($column in $columns)
+#if($column.columnName != $pk.columnName)
+   #if($foreach.hasNext)
+        ${column.columnName} = #{${column.attrname}},
+   #else
+        ${column.columnName} = #{${column.attrname}}
+   #end
+#end
+#end
+       where $pk.columnName = #{$pk.columnName}
+     </update>
+
+   <!-- 根据实体查询条件查询 -->
+  <select id="findForList" parameterType="${package}.model.${sonModule}.${className}"  resultMap="BaseResultMap">
+     select
+     <include refid="Base_Column_List" />
+     from $tableName
+     <where>
+    #foreach($column in $columns)
+     <if test="${column.attrname}!=null">
+         and ${column.columnName} = #{${column.attrname}}
+      </if>
+    #end
+    </where>
+  </select>
+</mapper>

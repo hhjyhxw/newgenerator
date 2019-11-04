@@ -1,0 +1,23 @@
+package ${package}.service.${sonModule};
+
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import ${package}.dao.${sonModule}.${className}Mapper;
+import ${package}.model.${sonModule}.${className};
+import ${package}.service.BaseServiceImp;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@Service
+@Transactional
+public class ${className}Service extends BaseServiceImp<${className}Mapper,${className}> {
+
+}
